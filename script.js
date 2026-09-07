@@ -371,27 +371,14 @@ function playClickSound() {
    ========================================================= */
 
 function beginGame(event) {
-
-    if (event) {
-        event.preventDefault();
-    }
-
-    /*
-       Start the game immediately on the user's
-       first interaction.
-    */
-
     startAudio();
 
     if (startScreen) {
         startScreen.classList.add("hidden");
-
-        /*
-           Make absolutely sure the start screen
-           can no longer block the menu.
-        */
-
-        startScreen.style.pointerEvents = "none";
+        // Force hide so it cannot obstruct clicks underneath
+        setTimeout(() => {
+            startScreen.style.display = "none";
+        }, 450);
     }
 }
 
@@ -425,21 +412,6 @@ if (startScreen) {
 
    The first tap anywhere starts the game.
 */
-
-document.addEventListener(
-    "pointerdown",
-    (event) => {
-
-        if (!audioStarted) {
-            beginGame(event);
-        }
-
-    },
-    {
-        passive: false
-    }
-);
-
 
 /*
    Keyboard users can also start the game.
