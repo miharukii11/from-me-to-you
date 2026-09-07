@@ -876,30 +876,20 @@ body {
 
 #transition {
     position: absolute;
-
     inset: 0;
-
     background: #000;
-
     opacity: 0;
-
     visibility: hidden;
-
     z-index: 200;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.35s ease,
-        visibility 0.35s ease;
+    pointer-events: none !important; /* Force it never to block touches */
+    transition: opacity 0.35s ease, visibility 0.35s ease;
 }
-
 
 #transition.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto !important;
 }
-
 
 /* =========================================================
    PHONE / SMALL SCREEN
