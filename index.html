@@ -1,0 +1,372 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no"
+    >
+
+    <title>FROM ME TO YOU</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         GAME
+         ===================================================== -->
+
+    <main id="game">
+
+        <!-- ================================================
+             BACKGROUND VIDEO
+             ================================================ -->
+
+        <video
+            id="background-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+        >
+            <source
+                src="video/background.mp4"
+                type="video/mp4"
+            >
+        </video>
+
+
+        <!-- Dark overlay above the background -->
+        <div id="background-overlay"></div>
+
+
+        <!-- ================================================
+             MAIN MENU
+             ================================================ -->
+
+        <section
+            id="menu-scene"
+            class="scene active"
+        >
+
+            <div id="menu-panel">
+
+                <!-- Title -->
+
+                <h1 id="menu-title">
+                    <span>FROM ME TO YOU</span>
+                </h1>
+
+
+                <!-- Menu -->
+
+                <nav id="menu-options">
+
+                    <button
+                        class="menu-option selected"
+                        data-scene="breakfast"
+                    >
+                        <span class="pixel-arrow"></span>
+                        <span class="option-text">
+                            BREAKFAST
+                        </span>
+                    </button>
+
+
+                    <button
+                        class="menu-option"
+                        data-scene="lunch"
+                    >
+                        <span class="pixel-arrow"></span>
+                        <span class="option-text">
+                            LUNCH
+                        </span>
+                    </button>
+
+
+                    <button
+                        class="menu-option"
+                        data-scene="dinner"
+                    >
+                        <span class="pixel-arrow"></span>
+                        <span class="option-text">
+                            DINNER
+                        </span>
+                    </button>
+
+                </nav>
+
+
+                <!-- Footer -->
+
+                <p id="menu-footer">
+                    Go ahead... choose.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================
+             BREAKFAST
+             ================================================ -->
+
+        <section
+            id="breakfast-scene"
+            class="scene meal-scene"
+        >
+
+            <div class="meal-title-panel">
+
+                <h2 class="meal-title breakfast-title">
+                    BREAKFAST
+                </h2>
+
+            </div>
+
+
+            <div class="description-panel">
+
+                <p>
+                    Pancakes and Mountain Dew sound like
+                    a great combo... maybe sprinkle some
+                    chicken wings.
+                </p>
+
+            </div>
+
+
+            <button
+                class="return-button"
+                data-return="menu"
+            >
+                ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU
+            </button>
+
+        </section>
+
+
+        <!-- ================================================
+             LUNCH
+             ================================================ -->
+
+        <section
+            id="lunch-scene"
+            class="scene meal-scene"
+        >
+
+            <div class="meal-title-panel">
+
+                <h2 class="meal-title lunch-title">
+                    LUNCH
+                </h2>
+
+            </div>
+
+
+            <div class="description-panel">
+
+                <p>
+                    Chicken rice with sweet and sour
+                    chicken with braised pork ribs....
+                    oooo and iced teaa
+                </p>
+
+            </div>
+
+
+            <button
+                class="return-button"
+                data-return="menu"
+            >
+                ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU
+            </button>
+
+        </section>
+
+
+        <!-- ================================================
+             DINNER
+             ================================================ -->
+
+        <section
+            id="dinner-scene"
+            class="scene dinner-scene"
+        >
+
+            <!-- Dinner GIF -->
+
+            <img
+                id="dinner-background"
+                src="images/dinner.gif"
+                alt=""
+            >
+
+
+            <!-- Dark overlay -->
+
+            <div class="dinner-overlay"></div>
+
+
+            <!-- Dinner title -->
+
+            <h2 id="dinner-title">
+                DINNER
+            </h2>
+
+
+            <!-- Click instruction -->
+
+            <p id="dinner-instruction">
+                CLICK ANYWHERE
+            </p>
+
+
+            <!-- Initial message -->
+
+            <p id="dinner-message">
+                and one last thing...
+            </p>
+
+
+            <!-- Love particles -->
+
+            <div id="love-shower"></div>
+
+
+            <!-- Return button -->
+
+            <button
+                class="return-button dinner-return"
+                data-return="menu"
+            >
+                ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU
+            </button>
+
+        </section>
+
+
+        <!-- ================================================
+             START / AUDIO NOTICE
+             ================================================ -->
+
+        <div id="start-screen">
+
+            <div id="start-content">
+
+                <div id="start-title">
+                    FROM ME TO YOU
+                </div>
+
+                <p>
+                    Tap anywhere to begin.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================
+             FADE TRANSITION
+             ================================================ -->
+
+        <div id="transition"></div>
+
+    </main>
+
+
+    <!-- =====================================================
+         AUDIO
+         ===================================================== -->
+
+    <audio
+        id="menu-music"
+        loop
+        preload="auto"
+    >
+        <source
+            src="music/everybody_wants_to_rule_the_world.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
+
+
+    <audio
+        id="breakfast-music"
+        loop
+        preload="auto"
+    >
+        <source
+            src="music/pink_pantheress.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
+
+
+    <audio
+        id="lunch-music"
+        loop
+        preload="auto"
+    >
+        <source
+            src="music/a_sky_full_of_stars.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
+
+
+    <audio
+        id="dinner-music"
+        loop
+        preload="auto"
+    >
+        <source
+            src="music/somebody_that_i_used_to_know.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
+
+
+    <!-- Menu sounds -->
+
+    <audio
+        id="hover-sound"
+        preload="auto"
+    >
+        <source
+            src="music/hover.wav"
+            type="audio/wav"
+        >
+    </audio>
+
+
+    <audio
+        id="click-sound"
+        preload="auto"
+    >
+        <source
+            src="music/click.wav"
+            type="audio/wav"
+        >
+    </audio>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
