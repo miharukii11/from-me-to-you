@@ -1,4 +1,3 @@
-```javascript
 /* =========================================================
    FROM ME TO YOU
    Game logic
@@ -1061,4 +1060,3 @@ updateMenuSelection(
 */
 
 stopAllMusic();
-```
