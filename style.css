@@ -1,0 +1,1073 @@
+```css
+/* =========================================================
+   FROM ME TO YOU
+   Main stylesheet
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0c111e;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: rgb(235, 232, 230);
+    touch-action: manipulation;
+}
+
+
+/* =========================================================
+   GAME
+   ========================================================= */
+
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100%;
+    overflow: hidden;
+    background: #0c111e;
+}
+
+
+/* =========================================================
+   BACKGROUND VIDEO
+   ========================================================= */
+
+#background-video {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    z-index: 0;
+
+    background: #0c111e;
+}
+
+
+#background-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(5, 8, 18, 0.16),
+            rgba(5, 8, 18, 0.16)
+        );
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   SCENES
+   ========================================================= */
+
+.scene {
+    position: absolute;
+    inset: 0;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 5;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+
+/* =========================================================
+   MAIN MENU
+   ========================================================= */
+
+#menu-scene {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Main Dragon Quest-inspired panel */
+
+#menu-panel {
+    position: relative;
+
+    width: 560px;
+    height: 430px;
+
+    padding: 0;
+
+    background: rgba(9, 15, 29, 0.94);
+
+    border: 2px solid rgb(37, 44, 63);
+
+    box-shadow:
+        inset 0 0 0 8px rgba(23, 29, 47, 0.9);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    z-index: 10;
+}
+
+
+/* Inner border */
+
+#menu-panel::before {
+    content: "";
+
+    position: absolute;
+
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+
+    border: 1px solid rgb(23, 29, 47);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MENU TITLE
+   ========================================================= */
+
+#menu-title {
+    position: relative;
+
+    margin-top: 42px;
+
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 58px;
+    font-weight: 900;
+
+    line-height: 1;
+
+    letter-spacing: -3px;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+
+/* Pink → blue title */
+
+#menu-title span {
+    background:
+        linear-gradient(
+            90deg,
+            rgb(145, 38, 78) 0%,
+            rgb(145, 38, 78) 38%,
+            rgb(58, 78, 130) 100%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   MENU OPTIONS
+   ========================================================= */
+
+#menu-options {
+    position: relative;
+
+    width: 100%;
+
+    margin-top: 70px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    z-index: 3;
+}
+
+
+.menu-option {
+    position: relative;
+
+    width: 360px;
+    height: 58px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: rgb(128, 38, 61);
+
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 28px;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        color 0.12s ease,
+        transform 0.12s ease;
+}
+
+
+.menu-option .option-text {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Selected option */
+
+.menu-option.selected {
+    color: rgb(185, 57, 91);
+
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   PIXEL ARROW
+   ========================================================= */
+
+.pixel-arrow {
+    position: absolute;
+
+    left: 28px;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    transform:
+        translateY(-50%)
+        scale(0);
+
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+
+    border-left: 14px solid rgb(166, 42, 86);
+
+    opacity: 0;
+
+    transition:
+        opacity 0.12s ease,
+        transform 0.12s ease;
+}
+
+
+.menu-option.selected .pixel-arrow {
+    opacity: 1;
+
+    transform:
+        translateY(-50%)
+        scale(1);
+}
+
+
+/* =========================================================
+   MENU FOOTER
+   ========================================================= */
+
+#menu-footer {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 27px;
+
+    text-align: center;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size: 15px;
+
+    color: rgb(235, 232, 230);
+
+    opacity: 0.82;
+
+    z-index: 3;
+}
+
+
+/* =========================================================
+   MEAL SCENES
+   ========================================================= */
+
+.meal-scene {
+    position: absolute;
+
+    background: transparent;
+}
+
+
+/* =========================================================
+   TOP TITLE PANEL
+   ========================================================= */
+
+.meal-title-panel {
+    position: absolute;
+
+    top: 35px;
+    left: 40px;
+    right: 40px;
+
+    height: 105px;
+
+    background: rgba(9, 15, 29, 0.82);
+
+    border: 1px solid rgba(37, 44, 63, 0.85);
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 30px;
+}
+
+
+/* =========================================================
+   MEAL TITLES
+   ========================================================= */
+
+.meal-title {
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 48px;
+    font-weight: 900;
+
+    line-height: 1;
+
+    letter-spacing: 2px;
+}
+
+
+.breakfast-title {
+    background:
+        linear-gradient(
+            90deg,
+            rgb(185, 48, 65),
+            rgb(58, 82, 145)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+.lunch-title {
+    background:
+        linear-gradient(
+            90deg,
+            rgb(185, 48, 65),
+            rgb(58, 82, 145)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   DESCRIPTION PANEL
+   ========================================================= */
+
+.description-panel {
+    position: absolute;
+
+    left: 70px;
+    right: 70px;
+
+    bottom: 60px;
+
+    min-height: 150px;
+
+    padding: 30px 55px;
+
+    background: rgba(9, 15, 29, 0.72);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+
+/* Gradient border */
+
+.description-panel::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    padding: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgb(52, 82, 155),
+            rgb(180, 48, 65)
+        );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    pointer-events: none;
+}
+
+
+/* Description text */
+
+.description-panel p {
+    position: relative;
+
+    max-width: 950px;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 25px;
+    font-weight: 500;
+
+    line-height: 1.35;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgb(205, 70, 125),
+            rgb(65, 105, 175)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   RETURN BUTTON
+   ========================================================= */
+
+.return-button {
+    position: absolute;
+
+    right: 35px;
+    bottom: 20px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: rgb(0, 0, 0);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    z-index: 20;
+}
+
+
+.return-button:hover {
+    opacity: 0.72;
+}
+
+
+/* =========================================================
+   DINNER
+   ========================================================= */
+
+#dinner-scene {
+    background: #0c111e;
+}
+
+
+/* Dinner GIF */
+
+#dinner-background {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    z-index: 0;
+}
+
+
+/* Dinner dark overlay */
+
+.dinner-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(4, 7, 15, 0.20);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   DINNER TITLE
+   ========================================================= */
+
+#dinner-title {
+    position: absolute;
+
+    left: 40px;
+    top: 30px;
+
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 19px;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgb(65, 95, 175),
+            rgb(205, 65, 130)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    z-index: 10;
+}
+
+
+/* =========================================================
+   DINNER CLICK INSTRUCTION
+   ========================================================= */
+
+#dinner-instruction {
+    position: absolute;
+
+    top: 31px;
+    right: 40px;
+
+    color: rgb(0, 0, 0);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   DINNER CENTER MESSAGE
+   ========================================================= */
+
+#dinner-message {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: rgb(235, 232, 230);
+
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 23px;
+    font-weight: 700;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    z-index: 10;
+
+    pointer-events: none;
+
+    text-shadow:
+        1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+
+/* =========================================================
+   LOVE SHOWER
+   ========================================================= */
+
+#love-shower {
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    z-index: 8;
+
+    pointer-events: none;
+}
+
+
+.love-particle {
+    position: absolute;
+
+    top: -60px;
+
+    white-space: nowrap;
+
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    color: rgb(205, 65, 130);
+
+    text-shadow:
+        1px 1px 0 rgba(0, 0, 0, 0.65);
+
+    animation-name: love-fall;
+
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    pointer-events: none;
+}
+
+
+.love-heart {
+    position: absolute;
+
+    top: -50px;
+
+    font-size: 20px;
+
+    color: rgb(205, 65, 130);
+
+    animation-name: love-fall;
+
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    pointer-events: none;
+}
+
+
+@keyframes love-fall {
+
+    0% {
+        transform:
+            translate3d(0, -70px, 0)
+            rotate(0deg);
+
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    50% {
+        transform:
+            translate3d(
+                var(--drift),
+                50vh,
+                0
+            )
+            rotate(180deg);
+    }
+
+    100% {
+        transform:
+            translate3d(
+                calc(var(--drift) * -1),
+                110vh,
+                0
+            )
+            rotate(360deg);
+
+        opacity: 0.95;
+    }
+}
+
+
+/* =========================================================
+   START SCREEN
+   ========================================================= */
+
+#start-screen {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(5, 8, 18, 0.35);
+
+    z-index: 100;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.45s ease,
+        visibility 0.45s ease;
+}
+
+
+#start-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+
+#start-content {
+    padding: 30px 45px;
+
+    text-align: center;
+
+    background: rgba(9, 15, 29, 0.92);
+
+    border: 1px solid rgb(37, 44, 63);
+
+    box-shadow:
+        inset 0 0 0 7px rgba(23, 29, 47, 0.9);
+}
+
+
+#start-title {
+    font-family:
+        "Courier New",
+        "Lucida Console",
+        monospace;
+
+    font-size: 34px;
+    font-weight: 900;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgb(145, 38, 78),
+            rgb(58, 78, 130)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+#start-content p {
+    margin-top: 18px;
+
+    font-size: 15px;
+
+    color: rgb(235, 232, 230);
+
+    opacity: 0.8;
+}
+
+
+/* =========================================================
+   TRANSITION
+   ========================================================= */
+
+#transition {
+    position: absolute;
+
+    inset: 0;
+
+    background: #000;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    z-index: 200;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+
+#transition.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   PHONE / SMALL SCREEN
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    #menu-panel {
+        width: min(88vw, 560px);
+        height: min(70vh, 430px);
+
+        min-height: 390px;
+    }
+
+
+    #menu-title {
+        font-size: clamp(30px, 8vw, 58px);
+        letter-spacing: -2px;
+
+        margin-top: 42px;
+    }
+
+
+    #menu-options {
+        margin-top: 55px;
+    }
+
+
+    .menu-option {
+        width: 82%;
+
+        font-size: clamp(20px, 5.5vw, 28px);
+
+        height: 55px;
+    }
+
+
+    .pixel-arrow {
+        left: 5px;
+    }
+
+
+    #menu-footer {
+        font-size: 12px;
+        bottom: 22px;
+    }
+
+
+    .meal-title-panel {
+        left: 20px;
+        right: 20px;
+
+        top: 20px;
+
+        height: 85px;
+
+        padding-left: 20px;
+    }
+
+
+    .meal-title {
+        font-size: clamp(28px, 8vw, 48px);
+    }
+
+
+    .description-panel {
+        left: 20px;
+        right: 20px;
+
+        bottom: 60px;
+
+        min-height: 170px;
+
+        padding: 25px 25px;
+    }
+
+
+    .description-panel p {
+        font-size: clamp(17px, 4.5vw, 25px);
+    }
+
+
+    .return-button {
+        right: 20px;
+        bottom: 17px;
+
+        font-size: 12px;
+    }
+
+
+    #dinner-title {
+        left: 20px;
+        top: 22px;
+    }
+
+
+    #dinner-instruction {
+        right: 20px;
+        top: 22px;
+
+        font-size: 12px;
+    }
+
+
+    #dinner-message {
+        font-size: 18px;
+
+        max-width: 90vw;
+
+        white-space: normal;
+    }
+
+
+    .love-particle {
+        font-size: 13px;
+    }
+
+
+    .love-heart {
+        font-size: 17px;
+    }
+
+
+    #start-content {
+        width: 82vw;
+
+        padding: 25px 20px;
+    }
+
+
+    #start-title {
+        font-size: clamp(23px, 7vw, 34px);
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-height: 600px) {
+
+    #menu-panel {
+        height: 90vh;
+        min-height: 340px;
+    }
+
+
+    #menu-title {
+        margin-top: 30px;
+    }
+
+
+    #menu-options {
+        margin-top: 35px;
+    }
+
+
+    .menu-option {
+        height: 48px;
+    }
+
+
+    #menu-footer {
+        bottom: 15px;
+    }
+
+}
+```
