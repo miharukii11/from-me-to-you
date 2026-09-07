@@ -6,15 +6,12 @@
 
 "use strict";
 
-
 /* =========================================================
    SETTINGS
    ========================================================= */
 
 const MUSIC_START_SECONDS = 45;
-
 const TRANSITION_TIME = 350;
-
 const LOVE_PARTICLE_COUNT = 45;
 
 
@@ -22,35 +19,21 @@ const LOVE_PARTICLE_COUNT = 45;
    ELEMENTS
    ========================================================= */
 
-const backgroundVideo =
-    document.getElementById("background-video");
+const backgroundVideo = document.getElementById("background-video");
 
-const startScreen =
-    document.getElementById("start-screen");
+const startScreen = document.getElementById("start-screen");
+const transition = document.getElementById("transition");
 
-const transition =
-    document.getElementById("transition");
-
-const menuScene =
-    document.getElementById("menu-scene");
-
-const breakfastScene =
-    document.getElementById("breakfast-scene");
-
-const lunchScene =
-    document.getElementById("lunch-scene");
-
-const dinnerScene =
-    document.getElementById("dinner-scene");
+const menuScene = document.getElementById("menu-scene");
+const breakfastScene = document.getElementById("breakfast-scene");
+const lunchScene = document.getElementById("lunch-scene");
+const dinnerScene = document.getElementById("dinner-scene");
 
 const menuOptions =
     Array.from(document.querySelectorAll(".menu-option"));
 
 const returnButtons =
     Array.from(document.querySelectorAll(".return-button"));
-
-const dinnerSceneElement =
-    document.getElementById("dinner-scene");
 
 const dinnerMessage =
     document.getElementById("dinner-message");
@@ -95,11 +78,8 @@ const allMusic = [
    ========================================================= */
 
 let currentScene = "menu";
-
 let selectedIndex = 0;
-
 let dinnerActivated = false;
-
 let audioStarted = false;
 
 
@@ -114,7 +94,6 @@ const breakfastImageCandidates = [
     "images/breakfast.webp"
 ];
 
-
 const lunchImageCandidates = [
     "images/lunch.png",
     "images/lunch.jpg",
@@ -122,28 +101,17 @@ const lunchImageCandidates = [
     "images/lunch.webp"
 ];
 
-
 let breakfastImageIndex = 0;
 let lunchImageIndex = 0;
 
+const breakfastSceneImage = document.createElement("img");
+const lunchSceneImage = document.createElement("img");
 
-const breakfastSceneImage =
-    document.createElement("img");
-
-const lunchSceneImage =
-    document.createElement("img");
-
-
-breakfastSceneImage.className =
-    "meal-background-image";
-
-lunchSceneImage.className =
-    "meal-background-image";
-
+breakfastSceneImage.className = "meal-background-image";
+lunchSceneImage.className = "meal-background-image";
 
 breakfastSceneImage.alt = "";
 lunchSceneImage.alt = "";
-
 
 breakfastScene.insertBefore(
     breakfastSceneImage,
@@ -170,9 +138,7 @@ function loadBreakfastImage() {
     }
 
     const candidate =
-        breakfastImageCandidates[
-            breakfastImageIndex
-        ];
+        breakfastImageCandidates[breakfastImageIndex];
 
     breakfastSceneImage.src = candidate;
 
@@ -199,9 +165,7 @@ function loadLunchImage() {
     }
 
     const candidate =
-        lunchImageCandidates[
-            lunchImageIndex
-        ];
+        lunchImageCandidates[lunchImageIndex];
 
     lunchSceneImage.src = candidate;
 
@@ -222,7 +186,8 @@ loadLunchImage();
    MEAL BACKGROUND STYLING
    ========================================================= */
 
-const mealBackgroundStyle = document.createElement("style");
+const mealBackgroundStyle =
+    document.createElement("style");
 
 mealBackgroundStyle.textContent = `
     .meal-background-image {
@@ -235,6 +200,7 @@ mealBackgroundStyle.textContent = `
         object-fit: cover;
 
         z-index: 0;
+        pointer-events: none;
     }
 
     .meal-scene::after {
@@ -268,12 +234,16 @@ function stopAllMusic() {
 
     allMusic.forEach((audio) => {
 
+        if (!audio) {
+            return;
+        }
+
         audio.pause();
 
         try {
             audio.currentTime = 0;
         } catch (error) {
-            // Ignore browsers that do not allow this yet.
+            // Ignore browser restrictions.
         }
     });
 }
@@ -287,11 +257,6 @@ function playMusic(audio) {
         return;
     }
 
-    /*
-       The browser needs the audio metadata before
-       currentTime can reliably be set.
-    */
-
     const startAudio = () => {
 
         try {
@@ -301,19 +266,15 @@ function playMusic(audio) {
             // Continue anyway.
         }
 
-        const playPromise =
-            audio.play();
+        const playPromise = audio.play();
 
         if (
             playPromise &&
             typeof playPromise.catch === "function"
         ) {
+
             playPromise.catch(() => {
-                /*
-                   Mobile browsers may block audio until
-                   the user taps the page. The first
-                   interaction will try again.
-                */
+                // Browser may block audio.
             });
         }
     };
@@ -358,7 +319,7 @@ function startAudio() {
 
 function playHoverSound() {
 
-    if (!audioStarted) {
+    if (!audioStarted || !hoverSound) {
         return;
     }
 
@@ -366,8 +327,7 @@ function playHoverSound() {
 
         hoverSound.currentTime = 0;
 
-        const promise =
-            hoverSound.play();
+        const promise = hoverSound.play();
 
         if (
             promise &&
@@ -384,7 +344,7 @@ function playHoverSound() {
 
 function playClickSound() {
 
-    if (!audioStarted) {
+    if (!audioStarted || !clickSound) {
         return;
     }
 
@@ -392,8 +352,7 @@ function playClickSound() {
 
         clickSound.currentTime = 0;
 
-        const promise =
-            clickSound.play();
+        const promise = clickSound.play();
 
         if (
             promise &&
@@ -412,23 +371,98 @@ function playClickSound() {
    START SCREEN
    ========================================================= */
 
-function beginGame() {
+function beginGame(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    /*
+       Start the game immediately on the user's
+       first interaction.
+    */
 
     startAudio();
 
-    startScreen.classList.add("hidden");
+    if (startScreen) {
+        startScreen.classList.add("hidden");
+
+        /*
+           Make absolutely sure the start screen
+           can no longer block the menu.
+        */
+
+        startScreen.style.pointerEvents = "none";
+    }
 }
 
 
-startScreen.addEventListener(
-    "click",
-    beginGame
+/*
+   The start screen itself.
+*/
+
+if (startScreen) {
+
+    startScreen.addEventListener(
+        "pointerdown",
+        beginGame,
+        { passive: false }
+    );
+
+    startScreen.addEventListener(
+        "click",
+        beginGame
+    );
+}
+
+
+/*
+   IMPORTANT:
+   Some mobile browsers do not reliably send the
+   first tap to the element that visually appears
+   on top.
+
+   Therefore, listen at document level too.
+
+   The first tap anywhere starts the game.
+*/
+
+document.addEventListener(
+    "pointerdown",
+    (event) => {
+
+        if (!audioStarted) {
+            beginGame(event);
+        }
+
+    },
+    {
+        passive: false
+    }
 );
 
-startScreen.addEventListener(
-    "touchstart",
-    beginGame,
-    { passive: true }
+
+/*
+   Keyboard users can also start the game.
+*/
+
+document.addEventListener(
+    "keydown",
+    () => {
+
+        if (!audioStarted) {
+            startAudio();
+
+            if (startScreen) {
+                startScreen.classList.add("hidden");
+                startScreen.style.pointerEvents = "none";
+            }
+        }
+
+    },
+    {
+        once: true
+    }
 );
 
 
@@ -454,6 +488,7 @@ function updateMenuSelection(
         playSound &&
         newIndex !== selectedIndex
     ) {
+
         playHoverSound();
     }
 
@@ -534,10 +569,6 @@ document.addEventListener(
     "keydown",
     (event) => {
 
-        /*
-           Main menu controls
-        */
-
         if (
             currentScene === "menu"
         ) {
@@ -598,10 +629,6 @@ document.addEventListener(
         }
 
 
-        /*
-           ESC returns to the menu
-        */
-
         if (
             event.key === "Escape"
         ) {
@@ -614,27 +641,8 @@ document.addEventListener(
 
                 openScene("menu");
             }
-
         }
 
-    }
-);
-
-
-/* =========================================================
-   TOUCH / MOBILE KEYBOARD SUPPORT
-   ========================================================= */
-
-document.addEventListener(
-    "touchstart",
-    () => {
-
-        startAudio();
-
-    },
-    {
-        passive: true,
-        once: true
     }
 );
 
@@ -673,10 +681,13 @@ function prepareScene(sceneName) {
 
         dinnerActivated = false;
 
-        dinnerMessage.style.display =
-            "block";
+        if (dinnerMessage) {
+            dinnerMessage.style.display = "block";
+        }
 
-        loveShower.innerHTML = "";
+        if (loveShower) {
+            loveShower.innerHTML = "";
+        }
     }
 }
 
@@ -729,9 +740,9 @@ function openScene(sceneName) {
     }
 
 
-    transition.classList.add(
-        "active"
-    );
+    if (transition) {
+        transition.classList.add("active");
+    }
 
 
     setTimeout(
@@ -770,7 +781,6 @@ function openScene(sceneName) {
                     selectedIndex,
                     false
                 );
-
             }
 
 
@@ -782,9 +792,11 @@ function openScene(sceneName) {
             setTimeout(
                 () => {
 
-                    transition.classList.remove(
-                        "active"
-                    );
+                    if (transition) {
+                        transition.classList.remove(
+                            "active"
+                        );
+                    }
 
                 },
                 40
@@ -840,11 +852,14 @@ function activateDinner() {
     dinnerActivated = true;
 
 
-    dinnerMessage.style.display =
-        "none";
+    if (dinnerMessage) {
+        dinnerMessage.style.display = "none";
+    }
 
 
-    loveShower.innerHTML = "";
+    if (loveShower) {
+        loveShower.innerHTML = "";
+    }
 
 
     createLoveParticles();
@@ -856,6 +871,10 @@ function activateDinner() {
    ========================================================= */
 
 function createLoveParticles() {
+
+    if (!loveShower) {
+        return;
+    }
 
     for (
         let i = 0;
@@ -919,11 +938,6 @@ function createLoveParticles() {
         );
 
 
-        /*
-           Slightly different sizes so the
-           shower does not look too uniform.
-        */
-
         if (!useHeart) {
 
             const size =
@@ -946,33 +960,31 @@ function createLoveParticles() {
    DINNER CLICK
    ========================================================= */
 
-dinnerSceneElement.addEventListener(
-    "click",
-    (event) => {
+if (dinnerScene) {
 
-        /*
-           Don't activate the shower if the user
-           clicked the return button.
-        */
+    dinnerScene.addEventListener(
+        "click",
+        (event) => {
 
-        if (
-            event.target.closest(
-                ".return-button"
-            )
-        ) {
-            return;
+            if (
+                event.target.closest(
+                    ".return-button"
+                )
+            ) {
+                return;
+            }
+
+
+            playClickSound();
+
+            activateDinner();
         }
-
-
-        playClickSound();
-
-        activateDinner();
-    }
-);
+    );
+}
 
 
 /* =========================================================
-   PREVENT DOUBLE-TAP ZOOM ON MOBILE
+   PREVENT DOUBLE-TAP ZOOM
    ========================================================= */
 
 let lastTouchTime = 0;
@@ -981,8 +993,7 @@ document.addEventListener(
     "touchend",
     (event) => {
 
-        const now =
-            Date.now();
+        const now = Date.now();
 
         if (
             now - lastTouchTime <= 300
@@ -992,6 +1003,7 @@ document.addEventListener(
         }
 
         lastTouchTime = now;
+
     },
     {
         passive: false
@@ -1009,12 +1021,15 @@ function startBackgroundVideo() {
         return;
     }
 
+
     backgroundVideo.muted = true;
 
     backgroundVideo.playsInline = true;
 
+
     const promise =
         backgroundVideo.play();
+
 
     if (
         promise &&
@@ -1022,10 +1037,7 @@ function startBackgroundVideo() {
     ) {
 
         promise.catch(() => {
-            /*
-               Some browsers require user interaction
-               before video playback.
-            */
+            // User interaction may be required.
         });
     }
 }
@@ -1045,11 +1057,7 @@ updateMenuSelection(
 
 
 /*
-   Keep the menu music stopped until the user
-   interacts with the start screen.
-
-   This is necessary because phones commonly
-   block automatic audio playback.
+   Keep music stopped until the user interacts.
 */
 
 stopAllMusic();
