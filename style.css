@@ -15,13 +15,16 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    overscroll-behavior: none;
     background: #0c111e;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
     color: rgb(235, 232, 230);
-    touch-action: manipulation;
 }
 
 
@@ -33,6 +36,7 @@ body {
     position: relative;
     width: 100vw;
     height: 100vh;
+    height: 100dvh; /* excludes the phone browser's address bar */
     min-height: 100%;
     overflow: hidden;
     background: #0c111e;
@@ -224,6 +228,8 @@ body {
 .menu-option {
     position: relative;
 
+    touch-action: manipulation;
+
     width: 360px;
     height: 58px;
 
@@ -324,6 +330,7 @@ body {
 
     font-family:
         "Courier New",
+        "Lucida Console",
         monospace;
 
     font-size: 15px;
@@ -487,6 +494,9 @@ body {
 
     font-family:
         "Segoe UI",
+        system-ui,
+        -apple-system,
+        Roboto,
         Arial,
         sans-serif;
 
@@ -521,6 +531,11 @@ body {
     right: 35px;
     bottom: 20px;
 
+    min-height: 44px;
+    padding: 10px 6px;
+
+    touch-action: manipulation;
+
     border: none;
     outline: none;
 
@@ -530,6 +545,9 @@ body {
 
     font-family:
         "Segoe UI",
+        system-ui,
+        -apple-system,
+        Roboto,
         Arial,
         sans-serif;
 
@@ -542,8 +560,31 @@ body {
 }
 
 
-.return-button:hover {
-    opacity: 0.72;
+@media (hover: hover) {
+
+    .return-button:hover {
+        opacity: 0.72;
+    }
+
+}
+
+
+/* Desktop vs. touch wording */
+
+.touch-label {
+    display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+
+    .desktop-label {
+        display: none;
+    }
+
+    .touch-label {
+        display: inline;
+    }
+
 }
 
 
@@ -638,6 +679,9 @@ body {
 
     font-family:
         "Segoe UI",
+        system-ui,
+        -apple-system,
+        Roboto,
         Arial,
         sans-serif;
 
@@ -959,9 +1003,9 @@ body {
         left: 20px;
         right: 20px;
 
-        bottom: 60px;
+        bottom: 64px;
 
-        min-height: 170px;
+        min-height: 150px;
 
         padding: 25px 25px;
     }
@@ -973,10 +1017,12 @@ body {
 
 
     .return-button {
-        right: 20px;
-        bottom: 17px;
+        right: 14px;
+        bottom: 8px;
 
-        font-size: 12px;
+        padding: 10px 12px;
+
+        font-size: 15px;
     }
 
 
@@ -990,7 +1036,7 @@ body {
         right: 20px;
         top: 22px;
 
-        font-size: 12px;
+        font-size: 13px;
     }
 
 
@@ -1028,14 +1074,15 @@ body {
 
 
 /* =========================================================
-   VERY SMALL PHONES
+   SHORT SCREENS (small phones / phones held sideways)
    ========================================================= */
 
 @media (max-height: 600px) {
 
     #menu-panel {
-        height: 90vh;
-        min-height: 340px;
+        height: min(90vh, 430px);
+        height: min(90dvh, 430px);
+        min-height: 0;
     }
 
 
@@ -1056,6 +1103,93 @@ body {
 
     #menu-footer {
         bottom: 15px;
+    }
+
+}
+
+
+@media (max-height: 460px) {
+
+    #menu-panel {
+        width: min(80vw, 560px);
+        height: auto;
+        max-height: 94vh;
+        max-height: 94dvh;
+        padding-bottom: 46px;
+    }
+
+
+    #menu-title {
+        margin-top: 22px;
+        font-size: clamp(26px, 11vh, 48px);
+        font-size: clamp(26px, 11dvh, 48px);
+    }
+
+
+    #menu-options {
+        margin-top: 14px;
+    }
+
+
+    .menu-option {
+        height: 44px;
+        font-size: clamp(18px, 6.5vh, 26px);
+        font-size: clamp(18px, 6.5dvh, 26px);
+    }
+
+
+    #menu-footer {
+        bottom: 14px;
+        font-size: 12px;
+    }
+
+
+    .meal-title-panel {
+        top: 12px;
+        left: 20px;
+        right: 20px;
+        height: 64px;
+        padding-left: 20px;
+    }
+
+
+    .meal-title {
+        font-size: clamp(26px, 9vh, 40px);
+        font-size: clamp(26px, 9dvh, 40px);
+    }
+
+
+    .description-panel {
+        left: 20px;
+        right: 20px;
+        bottom: 56px;
+        min-height: 0;
+        padding: 16px 24px;
+    }
+
+
+    .description-panel p {
+        font-size: clamp(15px, 5vh, 22px);
+        font-size: clamp(15px, 5dvh, 22px);
+    }
+
+
+    .return-button {
+        right: 14px;
+        bottom: 6px;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+
+    #dinner-title,
+    #dinner-instruction {
+        top: 14px;
+    }
+
+
+    #start-content {
+        padding: 20px 28px;
     }
 
 }

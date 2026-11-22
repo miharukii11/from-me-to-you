@@ -40,6 +40,9 @@ const dinnerMessage =
 const loveShower =
     document.getElementById("love-shower");
 
+const dinnerBackground =
+    document.getElementById("dinner-background");
+
 
 /* =========================================================
    AUDIO
@@ -256,42 +259,42 @@ function playMusic(audio) {
         return;
     }
 
-    const startAudio = () => {
+    /*
+       play() must be called right away, while the browser
+       still counts this as part of the user's tap. Phones
+       (especially iPhones) block sound that starts later.
+       The jump to MUSIC_START_SECONDS happens as soon as
+       the song's length is known.
+    */
 
+    const seekToStart = () => {
         try {
             audio.currentTime =
                 MUSIC_START_SECONDS;
         } catch (error) {
             // Continue anyway.
         }
-
-        const playPromise = audio.play();
-
-        if (
-            playPromise &&
-            typeof playPromise.catch === "function"
-        ) {
-
-            playPromise.catch(() => {
-                // Browser may block audio.
-            });
-        }
     };
 
-
     if (audio.readyState >= 1) {
-
-        startAudio();
-
+        seekToStart();
     } else {
-
         audio.addEventListener(
             "loadedmetadata",
-            startAudio,
+            seekToStart,
             { once: true }
         );
+    }
 
-        audio.load();
+    const playPromise = audio.play();
+
+    if (
+        playPromise &&
+        typeof playPromise.catch === "function"
+    ) {
+        playPromise.catch(() => {
+            // Browser may block audio.
+        });
     }
 }
 
@@ -390,28 +393,11 @@ function beginGame(event) {
 if (startScreen) {
 
     startScreen.addEventListener(
-        "pointerdown",
-        beginGame,
-        { passive: false }
-    );
-
-    startScreen.addEventListener(
         "click",
         beginGame
     );
 }
 
-
-/*
-   IMPORTANT:
-   Some mobile browsers do not reliably send the
-   first tap to the element that visually appears
-   on top.
-
-   Therefore, listen at document level too.
-
-   The first tap anywhere starts the game.
-*/
 
 /*
    Keyboard users can also start the game.
@@ -427,6 +413,10 @@ document.addEventListener(
             if (startScreen) {
                 startScreen.classList.add("hidden");
                 startScreen.style.pointerEvents = "none";
+
+                setTimeout(() => {
+                    startScreen.style.display = "none";
+                }, 450);
             }
         }
 
@@ -659,6 +649,35 @@ function prepareScene(sceneName) {
         if (loveShower) {
             loveShower.innerHTML = "";
         }
+
+        playDinnerBackground();
+
+    } else if (dinnerBackground) {
+
+        dinnerBackground.pause();
+    }
+}
+
+
+function playDinnerBackground() {
+
+    if (
+        !dinnerBackground ||
+        typeof dinnerBackground.play !== "function"
+    ) {
+        return;
+    }
+
+    dinnerBackground.muted = true;
+    dinnerBackground.playsInline = true;
+
+    const promise = dinnerBackground.play();
+
+    if (
+        promise &&
+        typeof promise.catch === "function"
+    ) {
+        promise.catch(() => {});
     }
 }
 
@@ -711,6 +730,10 @@ function openScene(sceneName) {
     }
 
 
+    // Start the new song now, while still inside the tap.
+    setMusicForScene(sceneName);
+
+
     if (transition) {
         transition.classList.add("active");
     }
@@ -753,11 +776,6 @@ function openScene(sceneName) {
                     false
                 );
             }
-
-
-            setMusicForScene(
-                sceneName
-            );
 
 
             setTimeout(
@@ -954,32 +972,11 @@ if (dinnerScene) {
 }
 
 
-/* =========================================================
-   PREVENT DOUBLE-TAP ZOOM
-   ========================================================= */
-
-let lastTouchTime = 0;
-
-document.addEventListener(
-    "touchend",
-    (event) => {
-
-        const now = Date.now();
-
-        if (
-            now - lastTouchTime <= 300
-        ) {
-
-            event.preventDefault();
-        }
-
-        lastTouchTime = now;
-
-    },
-    {
-        passive: false
-    }
-);
+/*
+   Double-tap zoom is turned off in style.css with
+   "touch-action: manipulation", so quick taps are
+   never swallowed.
+*/
 
 
 /* =========================================================
@@ -1015,6 +1012,22 @@ function startBackgroundVideo() {
 
 
 startBackgroundVideo();
+
+
+/*
+   iPhones in Low Power Mode block autoplay.
+   Try again on the first tap.
+*/
+
+document.addEventListener(
+    "click",
+    () => {
+        if (backgroundVideo && backgroundVideo.paused) {
+            startBackgroundVideo();
+        }
+    },
+    { once: true }
+);
 
 
 /* =========================================================
