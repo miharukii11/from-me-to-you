@@ -148,7 +148,8 @@
                 class="return-button"
                 data-return="menu"
             >
-                ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU
+                <span class="desktop-label">ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU</span>
+                <span class="touch-label">&larr; MENU</span>
             </button>
 
         </section>
@@ -187,7 +188,8 @@
                 class="return-button"
                 data-return="menu"
             >
-                ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU
+                <span class="desktop-label">ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU</span>
+                <span class="touch-label">&larr; MENU</span>
             </button>
 
         </section>
@@ -202,13 +204,22 @@
             class="scene dinner-scene"
         >
 
-            <!-- Dinner GIF -->
+            <!-- Dinner animation -->
 
-            <img
+            <video
                 id="dinner-background"
-                src="images/dinner.gif"
-                alt=""
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                poster="images/dinner-poster.jpg"
             >
+                <source
+                    src="images/dinner.mp4"
+                    type="video/mp4"
+                >
+            </video>
 
 
             <!-- Dark overlay -->
@@ -223,10 +234,11 @@
             </h2>
 
 
-            <!-- Click instruction -->
+            <!-- Click / tap instruction -->
 
             <p id="dinner-instruction">
-                CLICK ANYWHERE
+                <span class="desktop-label">CLICK ANYWHERE</span>
+                <span class="touch-label">TAP ANYWHERE</span>
             </p>
 
 
@@ -248,7 +260,8 @@
                 class="return-button dinner-return"
                 data-return="menu"
             >
-                ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU
+                <span class="desktop-label">ESC&nbsp;&nbsp; TO RETURN TO MAIN MENU</span>
+                <span class="touch-label">&larr; MENU</span>
             </button>
 
         </section>
@@ -291,7 +304,7 @@
     <audio
         id="menu-music"
         loop
-        preload="auto"
+        preload="none"
     >
         <source
             src="music/everybody_wants_to_rule_the_world.mp3"
@@ -303,7 +316,7 @@
     <audio
         id="breakfast-music"
         loop
-        preload="auto"
+        preload="none"
     >
         <source
             src="music/pink_pantheress.mp3"
@@ -315,7 +328,7 @@
     <audio
         id="lunch-music"
         loop
-        preload="auto"
+        preload="none"
     >
         <source
             src="music/a_sky_full_of_stars.mp3"
@@ -327,7 +340,7 @@
     <audio
         id="dinner-music"
         loop
-        preload="auto"
+        preload="none"
     >
         <source
             src="music/somebody_that_i_used_to_know.mp3"
